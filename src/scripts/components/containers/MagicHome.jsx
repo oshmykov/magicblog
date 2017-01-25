@@ -1,11 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import MagicHomeView from '~/components/views/MagicHomeView';
 
-export default class MagicHome extends React.Component {
+class MagicHome extends React.Component {
 	render() {
-		return (
-			<div>
-				Hello world!
-			</div>
-		);
+		return <MagicHomeView blogs={this.props.blogs} />
 	}
 };
+
+const mapStateToProps = (state, ownProps) => {
+	return {
+		blogs: state.blogs
+	}	
+};
+
+export default connect(mapStateToProps)(MagicHome);
