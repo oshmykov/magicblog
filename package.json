@@ -1,0 +1,19 @@
+{
+  "name": "magicblog",
+  "version": "1.0.0",
+  "description": "A Test project for Magic Leap",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "jest src/__tests__"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oshmykov/magicblog.git"
+  },
+  "author": "oshmykov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/oshmykov/magicblog/issues"
+  },
+  "homepage": "https://github.com/oshmykov/magicblog#readme"
+}
