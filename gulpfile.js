@@ -5,6 +5,7 @@ var sass = require('gulp-sass');
 var sourceMaps = require('gulp-sourcemaps');
 var notify = require('gulp-notify');
 var uglify = require('gulp-uglify');
+var envify = require('envify/custom');
 var browserSync = require('browser-sync').create();
 var source = require('vinyl-source-stream');
 var buffer = require('vinyl-buffer');
@@ -34,7 +35,7 @@ gulp.task('watch-html', ['build-html'], function() {
 
 var browserifyScripts = function() {
 	return browserify({
-		entries: './src/scripts/app.jsx', extensions: ['.jsx'], debug: true
+		entries: './src/scripts/app.jsx', extensions: ['.jsx', '.js'], debug: true
 	})	
 };
 
@@ -43,6 +44,7 @@ var babelifyScripts = function(stream) {
 		presets: ['es2015', 'react'],
 		plugins: ['transform-class-properties']
 	}))
+	.transform(envify({ NODE_ENV: 'development'}))
 	.bundle()
 	.on('error', function(error) {
 		console.log(error.message);
@@ -83,7 +85,7 @@ gulp.task('build', ['build-styles', 'build-scripts'], function() {
 gulp.task('sync', ['build'], function() {
 	browserSync.init({
 		server: {
-			files: ['./css/*.css', './scripts/*.js', './index.html'],
+			files: ['./css/*.css', './scripts/*.js', './scripts/*.jsx', './index.html'],
 			baseDir: 'build'
 		}
 	});
@@ -92,6 +94,7 @@ gulp.task('sync', ['build'], function() {
 gulp.task('run', ['sync'], function() {
 	gulp.watch('src/styles/**/*.scss', ['watch-styles']);
 	gulp.watch('src/scripts/**/*.jsx', ['watch-scripts']);
+	gulp.watch('src/scripts/**/*.js', ['watch-scripts']);
 	gulp.watch('src/index.html', ['watch-html']);
 });
 
