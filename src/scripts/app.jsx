@@ -10,9 +10,7 @@ import configureStore from './configureStore';
 import { Router, browserHistory } from 'react-router';
 import routes from './routes';
 
-import blogMakers from '~/makers/blogMakers';
-
-const store = configureStore(blogMakers);
+const store = configureStore();
 
 ReactDOM.render(
 	<Provider store={store}>

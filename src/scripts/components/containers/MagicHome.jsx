@@ -4,13 +4,13 @@ import MagicHomeView from '~/components/views/MagicHomeView';
 
 class MagicHome extends React.Component {
 	render() {
-		return <MagicHomeView blogs={this.props.blogs} />
+		return <MagicHomeView posts={this.props.posts} />
 	}
 };
 
 const mapStateToProps = (state, ownProps) => {
 	return {
-		blogs: state.blogs
+		posts: state.posts
 	}	
 };
 
