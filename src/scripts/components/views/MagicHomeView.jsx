@@ -3,7 +3,7 @@ import React from 'react';
 const MagicHomeView = props => (
 	<div>
 		Hello World!
-		<BlogsListView items={props.blogs} />
+		<BlogsListView items={props.posts} />
 	</div>
 );
 
