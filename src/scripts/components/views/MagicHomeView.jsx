@@ -1,4 +1,6 @@
 import React from 'react';
+import { Link } from 'react-router';
+import dateFormat from 'dateformat';
 
 const MagicHomeView = props => (
 	<div>
@@ -13,6 +15,8 @@ const BlogsListView = ({items = []}) => (
 	<ul>
 	{
 		items.map((item, i) => {
+			const datePosted = dateFormat(new Date(item.datetime), 'yyyy/mm/d');
+		
 			return (
 				<li key={i}>
 					<header>
@@ -22,7 +26,10 @@ const BlogsListView = ({items = []}) => (
 						{item.content}
 					</div>
 					<footer>
-						{item.datetime} by {item.username}
+						{datePosted} by {item.username} 
+						<Link to={`${datePosted}/${item.id}`}>
+						  View
+						</Link>						
 					</footer>
 				</li>
 			);
