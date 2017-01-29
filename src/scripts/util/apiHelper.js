@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import postsConstants from '~/constants/postsConstants';
 import mockApiHelper from '~/util/mockApiHelper';
 
 const apiBaseUrl = 'http://google.com';
@@ -11,19 +10,23 @@ export const ajaxHandler = (method) => method()
 	});
 
 export const apiHelper = {
-	readPosts(
-		orderBy = postsConstants.ORDER_BY, 
-		ascending = postsConstants.ASCENDING, 
-		skip = 0, 
-		take = postsConstants.ITEMS_PER_PAGE) {
-		
-		return mockApiHelper.readPosts(orderBy, ascending, skip, take);
+	readPosts(page = 0) {
+		return mockApiHelper.readPosts(page);
 	
 		return ($.ajax({
 			type: 'GET',
-			url: `${apiBaseUrl}/posts/${skip}/${take}`
+			url: `${apiBaseUrl}/posts/${page}`
 		}));
 	},
+	
+	readPost(postId) {
+		return mockApiHelper.readPost(postId);
+	
+		return ($.ajax({
+			type: 'GET',
+			url: `${apiBaseUrl}/post/${postId}`
+		}));
+	},	
   
 	createPost(title, content) {
 		const data = { title, content };

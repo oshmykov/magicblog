@@ -1,27 +1,18 @@
 import $ from 'jquery';
-import postsConstants from '~/constants/postsConstants';
 import blogMakers from '~/makers/blogMakers';
 
 const delay = 1000;
+const POSTS_PER_PAGE = 10;
 
 export default {
-	readPosts(
-		orderBy = postsConstants.ORDER_BY, 
-		ascending = postsConstants.ASCENDING, 
-		skip = 0, 
-		take = postsConstants.ITEMS_PER_PAGE) {
-		
+	readPosts(page = 0) {
 		const defer = $.Deferred();
 		
 		const ordered = blogMakers.posts.sort((a, b) => {
-			if (orderBy == 'name') {
-				return comparator(a, b, 'title', ascending);
-			}
-			else {
-				return comparator(a, b, 'datetime', ascending);
-			}
+			return comparator(a, b, 'datetime', false);
 		});
-		
+		const skip = page * POSTS_PER_PAGE;
+		const take = POSTS_PER_PAGE;
 		const result = ordered.slice(skip, skip + take);
 		
 		setTimeout(function() {
@@ -32,6 +23,25 @@ export default {
 		
 		return defer.promise();
 	},
+	
+	readPost(postId) {
+		const defer = $.Deferred();
+	
+		const filtered = blogMakers.posts.filter(p => p.id == postId);
+		
+		let result = null;
+		if (filtered && filtered.length > 0) {
+			result = filtered[0];
+		}
+		
+		setTimeout(function() {
+			defer.resolve({
+				response: result
+			});
+		}, delay);
+		
+		return defer.promise();		
+	},	
   
 	createPost(title, content) {
 

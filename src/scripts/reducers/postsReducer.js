@@ -1,14 +1,22 @@
 import initialState from '~/initialState';
+import { actionTypes } from '~/constants/actionTypes';
+import update from "react-addons-update";
 
-export default function blogReducer(state = initialState.posts, action) {
+export default function postsReducer(state = initialState.posts, action) {
 	switch (action.type) {
-		case 'POSTS_READ_SUCCESS':
-			return action.response;
-		case 'POSTS_READ_FAIL':
-			//console.log(action.error.state(), action.error.statusText);
+		case actionTypes.POSTS_READ_SUCCESS:
+			return update(state, {
+				$set: action.response
+			});
+		case actionTypes.POSTS_READ_FAILURE:
+			console.log(action.ex.state(), action.ex.statusText);
 			return state;
-		case 'POSTS_READ_EXCEPTION':
-			//console.log(action.ex.state(), action.ex.statusText);
+		case actionTypes.POST_READ_SUCCESS:
+			return update(state, {
+				$push: [action.response]
+			});
+		case actionTypes.POST_READ_FAILURE:
+			console.error(action);
 			return state;
 		default:
 			return state;
