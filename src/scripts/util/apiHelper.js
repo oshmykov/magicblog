@@ -46,6 +46,8 @@ export const apiHelper = {
 	},
 
 	updatePost(postId, title, content) {
+		return mockApiHelper.updatePost(postId, title, content);
+	
 		const data = {};
 		if (title) {
 			data.title = title;

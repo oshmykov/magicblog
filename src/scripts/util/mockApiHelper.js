@@ -69,7 +69,37 @@ export default {
 	updatePost(postId, title, content) {
 		const defer = $.Deferred();
 		
+		setTimeout(function() {
+			const index = blogMakers.posts.findIndex(p => p.id == postId);
+			if (index != -1) {
+				const post = blogMakers.posts[index];
+				
+				const diff = {
+					title: title || post.title,
+					content: content || post.content
+				};
+			
+				const updated = update(post, { $merge: {
+					title: diff.title,
+					content: diff.content
+				}});
+				
+				blogMakers.posts = update(blogMakers.posts, {
+					$splice: [[index, 1, updated]]
+				});
+				
+				defer.resolve({
+					response: updated
+				});				
+			}
+			else {
+				defer.resolve({
+					error: new Error('Invalid postId ' + postId)
+				});				
+			}
 		
+
+		}, delay);			
 		
 		return defer.promise();	
 	}	

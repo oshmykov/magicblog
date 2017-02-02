@@ -9,7 +9,6 @@ export default function postsReducer(state = initialState.posts, action) {
 				$set: action.response
 			});
 		case actionTypes.POSTS_READ_FAILURE:
-			console.log(action.ex.state(), action.ex.statusText);
 			return state;
 		case actionTypes.POST_READ_SUCCESS:
 			return update(state, {
@@ -23,6 +22,19 @@ export default function postsReducer(state = initialState.posts, action) {
 				$set: [action.response, ...state]
 			});
 		case actionTypes.POST_CREATE_FAILURE:
+			console.error(action);
+			return state;
+		case actionTypes.POST_UPDATE_SUCCESS:
+			const index = state.findIndex(p => p.id == action.response.id);
+			if (index == -1) {
+				throw new Error('Unable to update state with invalid postId', postId);
+			}
+			else {
+				return update(state, {
+					$splice: [[index, 1, action.response]]
+				});
+			}
+		case actionTypes.POST_UPDATE_FAILURE:
 			console.error(action);
 			return state;
 		default:
