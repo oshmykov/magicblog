@@ -34,6 +34,9 @@ const BlogsListView = ({items = []}) => (
 						{datePosted} by {item.username} 
 						<Link to={`${datePosted}/${item.id}`}>
 						  View
+						</Link>	
+						<Link to={`post/edit/${item.id}`}>
+						  Edit
 						</Link>						
 					</footer>
 				</li>

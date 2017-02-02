@@ -48,10 +48,7 @@ function* postCreate(action) {
 			throw new Error(error);
 		}
 		
-		console.log('postCreate', response);
-		
 		yield put({ type: actionTypes.POST_CREATE_SUCCESS, response });
-		
 		yield put(routerActions.push('/'));
 	}
 	catch (ex) {
@@ -60,15 +57,16 @@ function* postCreate(action) {
 }
 
 function* postUpdate(action) {
-	const postId = action.data.postId;
+	const postId = action.data.id;
 	try {
-		const { response, error } = yield call([ajaxHandler, apiHelper.createPost], postId, action.data.title, action.data.content);
+		const { response, error } = yield call([ajaxHandler, apiHelper.updatePost], postId, action.data.title, action.data.content);
 		
 		if (!response) {
 			throw new Error(error);
 		}
 		
 		yield put({ type: actionTypes.POST_UPDATE_SUCCESS, response });
+		yield put(routerActions.push('/'));
 	}
 	catch (ex) {
 		yield put({ type: actionTypes.POST_UPDATE_FAILURE, ex });

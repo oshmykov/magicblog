@@ -17,13 +17,35 @@ class ManagePost extends React.Component {
 		this.onSubmit = this.onSubmit.bind(this);
 		
 		this.state = {
-			post: update({}, {
-				$set: props.post	
-			}),
+			post: props.post,
 			editorState: Editor.createValueFromString(props.post.content, CONTENT_FORMAT),
 			errors: {}
 		};
 	}
+	
+	componentDidMount() {
+		const postId = this.props.params.postId;
+		
+		if (!this.props.post || !this.props.post.id) {
+			this.props.actions.readPost(postId);
+		}
+	}
+
+	componentWillReceiveProps(props) {
+		const postId = this.props.params.postId;
+		const nextPostId = props.params.postId;
+		
+		if (postId != nextPostId) {
+			this.props.actions.readPost(nextPostId);
+		}
+		else if (props.post) {
+			this.setState({
+				post: props.post,
+				editorState: Editor.createValueFromString(props.post.content, CONTENT_FORMAT),
+				errors: {}
+			});
+		}
+	}	
 	
 	onContentChange(editorState) {
 		this.setState({ 
@@ -59,9 +81,14 @@ class ManagePost extends React.Component {
 		
 		this.setState({ errors });
 		if (validator.isValid(errors)) {
+			
+		
 			if (this.state.post.id) {
-				let diffData = diff(this.state.post, submitData);
+				const diffData = diff(this.props.post, submitData);
+				
 				if (!empty(diffData)) {
+					diffData.id = this.state.post.id;
+					
 					this.props.actions.updatePost(diffData);
 				}
 			}
