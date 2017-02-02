@@ -35,5 +35,20 @@ export default {
 		}
 		
 		return errors;
+	},
+	
+	isValid(errors) {
+		if (errors) {
+			for (let key in errors) {
+				const error = errors[key];
+				if (error) {
+					if (Array.isArray(error.messages) && error.messages.length > 0) {
+						return false;
+					}					
+				}
+			}
+		}
+		
+		return true;
 	}
 };

@@ -1,5 +1,6 @@
 import $ from 'jquery';
 import blogMakers from '~/makers/blogMakers';
+import update from 'react-addons-update';
 
 const delay = 1000;
 const POSTS_PER_PAGE = 10;
@@ -44,11 +45,33 @@ export default {
 	},	
   
 	createPost(title, content) {
-
+		const defer = $.Deferred();
+		
+		setTimeout(function() {
+			const newPost = {
+				id: title.toLowerCase().replace(' ', '-'),
+				title: title,
+				content: content,
+				username: 'mockuser',
+				datetime: new Date().toISOString()
+			};
+			
+			blogMakers.posts.push(newPost);
+		
+			defer.resolve({
+				response: newPost
+			});
+		}, delay);		
+		
+		return defer.promise();	
 	},
 
 	updatePost(postId, title, content) {
+		const defer = $.Deferred();
 		
+		
+		
+		return defer.promise();	
 	}	
 };
 

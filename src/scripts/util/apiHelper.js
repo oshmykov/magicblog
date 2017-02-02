@@ -29,6 +29,8 @@ export const apiHelper = {
 	},	
   
 	createPost(title, content) {
+		return mockApiHelper.createPost(title, content);
+	
 		const data = { title, content };
 
 		return($.ajax({
@@ -39,12 +41,19 @@ export const apiHelper = {
 			},
 			url: `${apiBaseUrl}/posts`,
 			data: JSON.stringify(data),
-			dataType: "json"
+			dataType: 'json'
 		}));
 	},
 
 	updatePost(postId, title, content) {
-		const data = { title, content };
+		const data = {};
+		if (title) {
+			data.title = title;
+		}
+		if (content) {
+			data.content = content;
+		}
+		
 		return($.ajax({
 			type: 'PUT',
 			headers: {
@@ -53,7 +62,7 @@ export const apiHelper = {
 			},
 			url: `${apiBaseUrl}/posts/${postId}`,
 			data: JSON.stringify(data),
-			dataType: "json"
+			dataType: 'json'
 		}));		
 	}
 };

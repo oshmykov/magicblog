@@ -8,3 +8,11 @@ export function readPost(data) {
 	return { type: actionTypes.POST_READ, data };
 }
 
+export function createPost(data) {
+	return { type: actionTypes.POST_CREATE, data };
+}
+
+export function updatePost(data) {
+	return { type: actionTypes.POST_UPDATE, data };
+}
+
