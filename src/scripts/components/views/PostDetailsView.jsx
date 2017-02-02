@@ -1,5 +1,6 @@
 import React from 'react';
 import dateFormat from 'dateformat';
+import ReactMarkdown from 'react-markdown';
 
 const PostDetailsView = ({title, username, content, datetime}) => (
 	<article>
@@ -8,9 +9,8 @@ const PostDetailsView = ({title, username, content, datetime}) => (
 				{title} by <i>{username}</i>
 			</h2>
 		</header>
-		<p>
-			{content}
-		</p>
+		<div dangerouslySetInnerHTML={{__html: content}}>
+		</div>
 		<footer>Date created: {dateFormat(new Date(datetime), 'fullDate')}</footer>
 	</article>
 );

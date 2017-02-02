@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import dateFormat from 'dateformat';
+import h2p from 'html2plaintext';
 
 const MagicHomeView = props => (
 	<div>
@@ -11,11 +12,15 @@ const MagicHomeView = props => (
 
 export default MagicHomeView;
 
+const POST_PREVIEW_LENGTH = 140;
+
 const BlogsListView = ({items = []}) => (
 	<ul>
 	{
 		items.map((item, i) => {
 			const datePosted = dateFormat(new Date(item.datetime), 'yyyy/mm/d');
+			const plainContent = crop(h2p(item.content));
+			
 		
 			return (
 				<li key={i}>
@@ -23,7 +28,7 @@ const BlogsListView = ({items = []}) => (
 						{item.title}
 					</header>
 					<div>
-						{item.content}
+						{plainContent}
 					</div>
 					<footer>
 						{datePosted} by {item.username} 
@@ -37,3 +42,10 @@ const BlogsListView = ({items = []}) => (
 	}
 	</ul>
 );
+
+const crop = src => {
+	if (src && src.length > POST_PREVIEW_LENGTH) {
+		return src.substring(0, POST_PREVIEW_LENGTH - 3) + '...';
+	}
+	return src;
+};

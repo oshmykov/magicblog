@@ -6,6 +6,8 @@ import * as postsActions from '~/actions/postsActions';
 import Editor from 'react-rte';
 import update from 'react-addons-update';
 import validator from '~/util/validator';
+import diff from 'object-diff';
+import empty from 'is-empty';
 
 class ManagePost extends React.Component {
 	constructor(props) {
@@ -29,7 +31,7 @@ class ManagePost extends React.Component {
 			errors: update(this.state.errors, {
 				content: { $set: null }
 			})
-		});		
+		});
 	}
 	
 	onInputChange(event) {
@@ -46,26 +48,35 @@ class ManagePost extends React.Component {
 	}
 	
 	onSubmit(event) {
-		const target = {
+		console.log('onSubmit is fired');
+	
+		const submitData = {
 			title: this.state.post.title,
 			content: contentHtmlToString(this.state.editorState)
 		};
 		
-		this.setState({ 
-			errors: validator.validate(target, schema) 
-		});	
-
+		const errors = validator.validate(submitData, schema);
+		
+		this.setState({ errors });
+		if (validator.isValid(errors)) {
+			if (this.state.post.id) {
+				let diffData = diff(this.state.post, submitData);
+				if (!empty(diffData)) {
+					this.props.actions.updatePost(diffData);
+				}
+			}
+			else {
+				this.props.actions.createPost(submitData);
+			}
+		}
+		
 		event.preventDefault();
 	}
 	
 	render() {
-		return <ManagePostView post={this.state.post}
-			editorState={this.state.editorState}
-			onContentChange={this.onContentChange} 
-			onInputChange={this.onInputChange} 
-			onSubmit={this.onSubmit} 
-			errors={this.state.errors} />
-	}	
+		return <ManagePostView post={this.state.post} editorState={this.state.editorState} onContentChange={this.onContentChange} 
+			onInputChange={this.onInputChange} onSubmit={this.onSubmit} errors={this.state.errors} />
+	}
 }
 
 const mapStateToProps = (state, props) => {
@@ -78,10 +89,13 @@ const mapStateToProps = (state, props) => {
 };
 
 const getPostById = (posts = [], id) => {
-	const filtered = posts.filter(p => p.id == id);
-	if (filtered && filtered.length > 0) {
-		return filtered[0];
+	if (id) {
+		const filtered = posts.filter(p => p.id == id);
+		if (filtered && filtered.length > 0) {
+			return filtered[0];
+		}
 	}
+	
 	return {
 		title: "",
 		content: ""
