@@ -5,6 +5,7 @@ import h2p from 'html2plaintext';
 
 const MagicHomeView = props => (
 	<div>
+		{ !props.authenticated && <button onClick={() => props.loginHandler()}>Login</button>}
 		Hello World!
 		<BlogsListView items={props.posts} />
 	</div>

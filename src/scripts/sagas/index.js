@@ -1,8 +1,10 @@
-import posts from '~/sagas/postsSaga'; 
+import posts from '~/sagas/postsSaga';
+import user from '~/sagas/userSaga'; 
 
 
 export default function* rootSaga() {
 	yield [
-		posts()
+		posts(),
+		user()
 	];
 }

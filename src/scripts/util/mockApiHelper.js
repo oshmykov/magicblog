@@ -102,6 +102,33 @@ export default {
 		}, delay);			
 		
 		return defer.promise();	
+	},
+
+	login(username, password) {
+		const defer = $.Deferred();
+		
+		setTimeout(function() {
+			const user = {
+				username: 'mockuser',
+				authenticated: true
+			};
+			
+			const headers = {
+				"X-AUTH-TOKEN": "OPIUO87HLIUP09345F9Y34FUOHGIUW43HT3P9G7UH43P78TF389Y4097T"
+			};
+		
+			defer.resolve({
+				data: user,
+				textStatus: 200,
+				jqXHR: {
+					getResponseHeader: key => {
+						return headers[key];
+					}
+				}
+			});
+		}, delay);		
+		
+		return defer.promise();					
 	}	
 };
 
