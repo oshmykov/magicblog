@@ -1,4 +1,4 @@
-import initialState from '~/initialState';
+import initialState from '~/store/initialState';
 import { actionTypes } from '~/constants/actionTypes';
 import update from 'react-addons-update';
 

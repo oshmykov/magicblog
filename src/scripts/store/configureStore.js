@@ -4,8 +4,8 @@ import createSagaMiddleware from 'redux-saga';
 import { routerMiddleware as createRouterMiddleware } from 'react-router-redux';
 import { hashHistory } from 'react-router';
 
-import rootReducer from './reducers/index';
-import rootSaga from './sagas/index';
+import rootReducer from '~/reducers';
+import rootSaga from '~/sagas';
 
 const immutableStateMiddleware = reduxImmutableStateInvariant();
 const sagaMiddleware = createSagaMiddleware();

@@ -26,7 +26,7 @@ class ManagePost extends React.Component {
 	componentDidMount() {
 		const postId = this.props.params.postId;
 		
-		if (!this.props.post || !this.props.post.id) {
+		if (postId) {
 			this.props.actions.readPost(postId);
 		}
 	}
@@ -81,8 +81,6 @@ class ManagePost extends React.Component {
 		
 		this.setState({ errors });
 		if (validator.isValid(errors)) {
-			
-		
 			if (this.state.post.id) {
 				const diffData = diff(this.props.post, submitData);
 				
