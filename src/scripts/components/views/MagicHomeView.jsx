@@ -7,7 +7,7 @@ const MagicHomeView = props => (
 	<div>
 		{ !props.authenticated && <button onClick={() => props.loginHandler()}>Login</button>}
 		Hello World!
-		<BlogsListView items={props.posts} />
+		<BlogsListView posts={props.posts} authenticated={props.authenticated} username={props.username}  />
 	</div>
 );
 
@@ -15,30 +15,29 @@ export default MagicHomeView;
 
 const POST_PREVIEW_LENGTH = 140;
 
-const BlogsListView = ({items = []}) => (
+const BlogsListView = ({posts = [], authenticated = false, username}) => (
 	<ul>
 	{
-		items.map((item, i) => {
-			const datePosted = dateFormat(new Date(item.datetime), 'yyyy/mm/d');
-			const plainContent = crop(h2p(item.content));
+		posts.map((post, i) => {
+			const datePosted = dateFormat(new Date(post.datetime), 'yyyy/mm/d');
+			const plainContent = crop(h2p(post.content));
 			
+			const canEdit = authenticated && post.username == username;
 		
 			return (
 				<li key={i}>
 					<header>
-						{item.title}
+						{post.title}
 					</header>
 					<div>
 						{plainContent}
 					</div>
 					<footer>
-						{datePosted} by {item.username} 
-						<Link to={`${datePosted}/${item.id}`}>
+						{datePosted} by {post.username} 
+						<Link to={`${datePosted}/${post.id}`}>
 						  View
 						</Link>	
-						<Link to={`post/edit/${item.id}`}>
-						  Edit
-						</Link>						
+						{ canEdit && <Link to={`post/edit/${post.id}`}>Edit</Link> }						
 					</footer>
 				</li>
 			);

@@ -2,6 +2,6 @@ export default {
 	posts: [],
 	user: {
 		username: '',
-		posts: null
+		authenticated: false
 	}
 };
