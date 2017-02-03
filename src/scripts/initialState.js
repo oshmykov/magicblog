@@ -1,3 +1,7 @@
 export default {
-	posts: []
+	posts: [],
+	user: {
+		username: '',
+		posts: null
+	}
 };

@@ -4,9 +4,11 @@ import mockApiHelper from '~/util/mockApiHelper';
 const apiBaseUrl = 'http://google.com';
 
 export const ajaxHandler = (method) => method()
-	.then(respone => response)
+	.then((data, textStatus, jqXHR) => {
+		return { data, textStatus, jqXHR };
+	})
 	.fail((jqXHR, textStatus, errorThrown) => {
-		return jqXHR;
+		return { jqXHR, textStatus, errorThrown };
 	});
 
 export const apiHelper = {
@@ -65,6 +67,19 @@ export const apiHelper = {
 			url: `${apiBaseUrl}/posts/${postId}`,
 			data: JSON.stringify(data),
 			dataType: 'json'
+		}));		
+	},
+	
+	login(username, password) {
+		return mockApiHelper.login(username, password);
+	
+		return($.ajax({
+			type: 'POST',
+			url: `${apiBaseUrl}/users/login`,
+			data: {
+				username: username, 
+				password: password
+			}
 		}));		
 	}
 };
