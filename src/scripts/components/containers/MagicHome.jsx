@@ -24,8 +24,6 @@ class MagicHome extends React.Component {
 	}
 	
 	componentWillReceiveProps(props) {
-		console.log('componentWillReceiveProps', props);
-	
 		const currentPage = paramsHelper.getPageNumber(this.props.params.page);
 		const nextPage = paramsHelper.getPageNumber(props.params.page);
 		
@@ -35,7 +33,11 @@ class MagicHome extends React.Component {
 	}
 	
 	render() {
-		return <MagicHomeView posts={this.props.posts} loginHandler={this.login} authenticated={this.props.user.authenticated} />
+		return <MagicHomeView 
+			posts={this.props.posts} 
+			loginHandler={this.login} 
+			authenticated={this.props.user.authenticated}
+			username={this.props.user.username} />
 	}
 };
 
