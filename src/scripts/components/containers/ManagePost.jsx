@@ -1,13 +1,19 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { routerActions } from 'react-router-redux';
+import empty from 'is-empty';
+import diff from 'object-diff';
+import dateFormat from 'dateformat';
+
+import Editor from 'react-rte';
+
 import ManagePostView from '~/components/views/ManagePostView';
 import * as postsActions from '~/actions/postsActions';
-import Editor from 'react-rte';
 import update from 'react-addons-update';
 import validator from '~/util/validator';
-import diff from 'object-diff';
-import empty from 'is-empty';
+
+
 
 class ManagePost extends React.Component {
 	constructor(props) {
@@ -15,6 +21,7 @@ class ManagePost extends React.Component {
 		this.onContentChange = this.onContentChange.bind(this);
 		this.onInputChange = this.onInputChange.bind(this);
 		this.onSubmit = this.onSubmit.bind(this);
+		this.unauthorizedToEdit = this.unauthorizedToEdit.bind(this);
 		
 		this.state = {
 			post: props.post,
@@ -24,10 +31,13 @@ class ManagePost extends React.Component {
 	}
 	
 	componentDidMount() {
-		const postId = this.props.params.postId;
-		
-		if (postId) {
-			this.props.actions.readPost(postId);
+		if (isReadyToEdit(this.props.post)) {
+			if (!isAuthorizedToEdit(this.props.post, this.props.user)) {
+				this.unauthorizedToEdit(this.props.post);
+			}
+		}
+		else if (isTryingToEdit(this.props.params)) {
+			this.props.actions.readPost(this.props.params.postId);
 		}
 	}
 
@@ -38,14 +48,28 @@ class ManagePost extends React.Component {
 		if (postId != nextPostId) {
 			this.props.actions.readPost(nextPostId);
 		}
-		else if (props.post) {
-			this.setState({
-				post: props.post,
-				editorState: Editor.createValueFromString(props.post.content, CONTENT_FORMAT),
-				errors: {}
-			});
+		
+		if (props.post) {
+			if (isReadyToEdit(props.post)) {
+				if (isAuthorizedToEdit(props.post, props.user)) {
+					this.setState({
+						post: props.post,
+						editorState: Editor.createValueFromString(props.post.content, CONTENT_FORMAT),
+						errors: {}
+					});				
+				}
+				else {
+					this.unauthorizedToEdit(this.props.post);
+				}
+			}
 		}
-	}	
+	}
+	
+	unauthorizedToEdit(post) {
+		const datePosted = dateFormat(new Date(post.datetime), 'yyyy/mm/d');
+		
+		this.props.routerActions.replace(`${datePosted}/${post.id}`);
+	}
 	
 	onContentChange(editorState) {
 		this.setState({ 
@@ -81,11 +105,11 @@ class ManagePost extends React.Component {
 		
 		this.setState({ errors });
 		if (validator.isValid(errors)) {
-			if (this.state.post.id) {
+			if (this.props.post.id) {
 				const diffData = diff(this.props.post, submitData);
 				
 				if (!empty(diffData)) {
-					diffData.id = this.state.post.id;
+					diffData.id = this.props.post.id;
 					
 					this.props.actions.updatePost(diffData);
 				}
@@ -109,7 +133,8 @@ const mapStateToProps = (state, props) => {
 	const post = getPostById(state.posts, postId);
 
 	return {
-		post: post
+		post: post,
+		user: state.user
 	}	
 };
 
@@ -129,7 +154,8 @@ const getPostById = (posts = [], id) => {
 
 const mapDispatchToProps = dispatch => {
 	return {
-		actions: bindActionCreators(postsActions, dispatch)
+		actions: bindActionCreators(postsActions, dispatch),
+		routerActions: bindActionCreators(routerActions, dispatch)
 	};
 };
 
@@ -139,6 +165,12 @@ const contentHtmlToString = editorState => {
 	const asString = editorState.toString(CONTENT_FORMAT);
 	return asString == EMPTY_CONTENT_HTML ? '' : asString;
 };
+
+const isReadyToEdit = post => post && post.id;
+
+const isTryingToEdit = params => params && params.postId;
+
+const isAuthorizedToEdit = (post, user) => post.username == user.username;
 
 const schema = {
 	title: {
