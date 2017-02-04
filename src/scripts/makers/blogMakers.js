@@ -6,7 +6,7 @@ export default {
 					work while you are on the road! Find work abroad is a lot easier
 					than you think. In this post, I share 15 ways you can earn money
 					when you travel so you can keep exploring the world!`,
-		"username": "NomadicMatt",
+		"username": "mockuser",
 		"datetime": "2017-01-20T20:09:18+00:00"
 	}, {
 		"id": "capte-town-guide",
