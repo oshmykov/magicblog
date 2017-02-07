@@ -52,7 +52,21 @@ export default {
 					you’ll cry, and prices haven’t changed since the 1980s. The mysterious 
 					Thai island that no “tourists” know about. But the biggest myth of all?`,
 		"username": "adventurouskate",
-		"datetime": "2017-01-28T20:09:18+00:00"		
+		"datetime": "2017-01-28T20:09:18+00:00",
+		"comments": [{
+			"username": "user1",
+			"content": "Comment 1",
+			"datetime": "2017-01-20T20:19:18+00:00"
+		}, {
+			"username": "user2",
+			"content": "Comment 2",
+			"datetime": "2017-01-20T20:20:18+00:00"			
+		}, {
+			"username": "user1",
+			"content": "Comment 3",
+			"datetime": "2017-01-20T21:20:18+00:00"			
+		}],
+		"totalComments": 3
 	}, {
 		"id": "my-plan-for-2017-a-commitment-to-fitness",
 		"title": "My Plan for 2017: A Commitment to Fitness",
