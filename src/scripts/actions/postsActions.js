@@ -16,3 +16,7 @@ export function updatePost(data) {
 	return { type: actionTypes.POST_UPDATE, data };
 }
 
+export function createComment(username, postId, text) {
+	return { type: actionTypes.COMMENT_CREATE, username, postId, text };
+}
+

@@ -129,7 +129,60 @@ export default {
 		}, delay);		
 		
 		return defer.promise();					
-	}	
+	},
+	
+	createComment(username, postId, text) {
+		const defer = $.Deferred();
+		
+		setTimeout(function() {
+			const index = blogMakers.posts.findIndex(p => p.id == postId);
+			
+			if (index != -1) {
+				const post = blogMakers.posts[index];
+				
+				const comment = {
+					username: username,
+					content: text,
+					datetime: new Date().toISOString()
+				};
+				
+				let updated = null;
+				
+				if (post.comments) {
+					updated = update(post, { 
+						comments: { $push: [comment] }
+					});				
+				}
+				else {
+					updated = update(post, { 
+						comments: { $set: [comment] }
+					});						
+				}
+
+				blogMakers.posts = update(blogMakers.posts, {
+					$splice: [[index, 1, updated]]
+				});
+				
+				const response = {
+					postId: postId,
+					username: comment.username,
+					content: comment.content,
+					datetime: comment.datetime
+				};
+				
+				defer.resolve(response);
+			}
+			else {
+				defer.resolve({
+					error: new Error('Invalid postId ' + postId)
+				});				
+			}
+		
+
+		}, delay);			
+		
+		return defer.promise();	
+	},	
 };
 
 const comparator = (item1, item2, fieldName, ascending = true) => {

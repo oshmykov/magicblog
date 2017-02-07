@@ -81,5 +81,22 @@ export const apiHelper = {
 				password: password
 			}
 		}));		
+	},
+	
+	createComment(username, postId, text) {
+		return mockApiHelper.createComment(username, postId, text);
+		
+		const data = { username, text };
+	
+		return($.ajax({
+			type: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json'
+			},			
+			url: `${apiBaseUrl}/posts/${postId}`,
+			data: JSON.stringify(data),
+			dataType: 'json'
+		}));		
 	}
 };
