@@ -73,6 +73,18 @@ function* postUpdate(action) {
 	}
 }
 
+function* commentCreate(action) {
+	try {
+		const response = yield call([ajaxHandler, apiHelper.createComment], action.username, action.postId, action.text);
+		yield put({ type: actionTypes.COMMENT_CREATE_SUCCESS, response }); 
+	}
+	catch (ex) {
+		console.log('ex', ex);
+		
+		yield put({ type: actionTypes.COMMENT_CREATE_FAILURE, ex });
+	}
+}
+
 function* watchPostsRead() {
 	yield takeLatest(actionTypes.POSTS_READ, postsRead);
 }
@@ -89,9 +101,14 @@ function* watchPostUpdate() {
 	yield takeLatest(actionTypes.POST_UPDATE, postUpdate);
 }
 
+function* watchCommentCreate() {
+	yield takeLatest(actionTypes.COMMENT_CREATE, commentCreate);
+}
+
 export default function* watchers() {
 	yield fork(watchPostsRead);
 	yield fork(watchPostRead);
 	yield fork(watchPostCreate);
 	yield fork(watchPostUpdate);
+	yield fork(watchCommentCreate);
 } 

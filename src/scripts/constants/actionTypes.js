@@ -23,5 +23,9 @@ export const actionTypes = keyMirror({
 	
 	USER_LOGIN: null,
 	USER_LOGIN_SUCCESS: null,
-	USER_LOGIN_FAILURE: null
+	USER_LOGIN_FAILURE: null,
+	
+	COMMENT_CREATE: null,
+	COMMENT_CREATE_SUCCESS: null,
+	COMMENT_CREATE_FAILURE: null,	
 });

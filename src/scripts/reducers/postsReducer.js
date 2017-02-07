@@ -25,9 +25,9 @@ export default function postsReducer(state = initialState.posts, action) {
 			console.error(action);
 			return state;
 		case actionTypes.POST_UPDATE_SUCCESS:
-			const index = state.findIndex(p => p.id == action.response.id);
+			let index = state.findIndex(p => p.id == action.response.id);
 			if (index == -1) {
-				throw new Error('Unable to update state with invalid postId', postId);
+				throw new Error('Unable to update state with invalid postId ' + action.response.id);
 			}
 			else {
 				return update(state, {
@@ -36,6 +36,37 @@ export default function postsReducer(state = initialState.posts, action) {
 			}
 		case actionTypes.POST_UPDATE_FAILURE:
 			console.error(action);
+			return state;
+		case actionTypes.COMMENT_CREATE_SUCCESS:
+			index = state.findIndex(p => p.id == action.response.postId);
+			if (index == -1) {
+				throw new Error('Unable to update state with invalid postId ' + action.response.postId);
+			}
+			else {
+				const comment = {
+					content: action.response.content,
+					username: action.response.username,
+					datetime: action.response.datetime
+				};
+			
+				let updated = null;
+				if (state[index].comments) {
+					updated = update(state[index], { 
+						comments: { $push: [action.response] }
+					});				
+				}
+				else {
+					updated = update(state[index], { 
+						comments: { $set: [comment] }
+					});			
+				}
+				
+				return update(state, {
+					$splice: [[index, 1, updated]]
+				});
+				
+				return state;
+			}			
 			return state;
 		default:
 			return state;

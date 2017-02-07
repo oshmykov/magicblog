@@ -19,7 +19,6 @@ class MagicHome extends React.Component {
 	}
 	
 	login() {
-		console.log('login is called');
 		this.props.userActions.login();
 	}
 	
