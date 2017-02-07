@@ -76,7 +76,7 @@ gulp.task('build-styles', ['clean-styles'], function() {
 });
 
 gulp.task('build', ['build-styles', 'build-scripts'], function() {
-	var sources = gulp.src(['./build/scripts/bundle.min.js'], { read: false });
+	var sources = gulp.src(['./build/scripts/bundle.min.js', 'build/**/*.css'], { read: false });
 	return gulp.src('./src/index.html')
 		.pipe(inject(sources, { addRootSlash: false, ignorePath: 'build' }))
 		.pipe(gulp.dest('./build/'));

@@ -1,0 +1,46 @@
+.home {
+	.row {
+		font-size: 100%;
+		a {
+			&.as-regular-text {
+				color: $gray-dark;
+			}
+		}
+		h1 {
+			font-size: 150%;
+		}
+		p {
+			font-size: 120%;
+		}
+		footer {
+			font-size: 100%;
+			font-family: Lora, "Times New Roman", serif;
+			font-style: italic;
+			color: $gray;
+		}
+	}
+}
+
+@media (min-width: $screen-sm-min) {
+	.home {
+		.row {
+			font-size: 120%;
+		}
+	}
+}
+
+@media (min-width: $screen-md-min) {
+	.home {
+		.row {
+			font-size: 140%;
+		}
+	}
+}
+
+@media (min-width: $screen-lg-min) {
+	.home {
+		.row {
+			font-size: 160%;
+		}
+	}
+}
