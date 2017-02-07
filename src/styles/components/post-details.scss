@@ -3,7 +3,10 @@
 		font-size: 100%;
 		h1 {
 			font-size: 150%;
-		}
+		},
+		h2 {
+			font-size: 130%;
+		}		
 		p {
 			font-size: 120%;
 		}
@@ -13,6 +16,19 @@
 			font-style: italic;
 			color: $gray;
 		}
+	}
+	.comments {
+		@include clear-list;
+		font-size: 90%;
+		li {
+			background-color: $gray-lighter;
+			margin: .5em 0;
+			padding: 1em;
+			footer {
+				text-align: right;
+			}		
+		}
+
 	}
 }
 
