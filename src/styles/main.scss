@@ -1,0 +1,7 @@
+@import 'node_modules/normalize-scss/sass/normalize';
+@import 'node_modules/bootstrap-sass/assets/stylesheets/bootstrap';
+
+@import 'global/variables';
+@import 'global/base';
+@import 'components/home';
+@import 'components/post-details';

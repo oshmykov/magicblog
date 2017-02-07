@@ -1,4 +1,5 @@
 import React from 'react';
+import { Grid, Row, Col } from 'react-bootstrap';
 
 import NavBar from './NavBar';
 
@@ -22,8 +23,8 @@ export default class App extends React.Component {
 					})
 				}					
 				</main>
-				<footer>
-					Footer
+				<footer className="container">
+					Copyright © BagicBlog 2016
 				</footer>
 			</div>
 		);
